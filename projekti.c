@@ -28,23 +28,22 @@
     int size = arr -> numStudents;
     int i = 0;  //index of the student with the correct id
     int found = 0;
-    int ind;
     while(!found && i < size){
         int equal = strcmp(arr->students[i].studentId,studentId);
         if(equal == 0){  //found the right student
             found = 1;
-            ind = i;
+            arr->students[i].points[round-1] = points;//add the round points for the student
+            int j, sum = 0;
+                for (j=0; j<6; j++){ //calculate new total points:
+                    sum = sum + arr->students[i].points[j];
+                }
+                printf("total: %d \n",sum);
+            arr -> students[i].totalPoints = sum;
         }
         i++;
     }
 
-            arr->students[ind].points[round-1] = points;//add the round points for the student
-            int j, sum = 0;
-                for (j=0; j<6; j++){ //calculate new total points:
-                    sum = sum + arr->students[ind].points[j];
-                }
-                printf("total: %d",sum);
-            arr -> students[i].totalPoints = sum;
+
 
 
     if(!found){
@@ -75,11 +74,12 @@
     int size = arr->numStudents;
     int i = 0;
     while(i < size){
-        printf("%s %s ",arr -> students[i].studentId,arr -> students[i].studentName); //id and name
-        for(int j = 0;i<6;j++){
-            printf("%d",arr -> students[i].points[j]); //print points for each round
+        printf("| %s | %s | ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
+        printf("Exercise points by round: |");
+        for(int j = 0;j<6;j++){
+            printf(" %d |",arr -> students[i].points[j]); //print points for each round
         }
-        printf(" Total points: %d\n",arr -> students[i].totalPoints);
+        printf(" Total points: %d |\n",arr -> students[i].totalPoints);
         i++;
     }
 
