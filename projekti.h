@@ -19,5 +19,8 @@ typedef struct course_st{
     int numStudents;
 }Course;
 
+void addStudent(const char *studentId, const char *name, Course *arr);
+void addPoints(const char *studentId, int round, int points, Course *arr);
+void printStudents(Course *arr);
 
 #endif // projekti.h

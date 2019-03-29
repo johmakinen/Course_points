@@ -5,5 +5,11 @@
 	<string.h>
 	"projekti.h"
 
-1553868226 c:\users\johma\desktop\kouluhommii\c\course_points\projekti.h
+1553871247 c:\users\johma\desktop\kouluhommii\c\course_points\projekti.h
+
+1553871252 source:c:\users\johma\desktop\kouluhommii\c\course_points\projekti.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	"projekti.h"
 
