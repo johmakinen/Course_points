@@ -25,5 +25,7 @@ void printStudents(Course *arr);
 int compareNum(const void* a, const void* b);
 void printStudents(Course *arr);
 void writeToFile(char *file, Course *arr);
+void readFromFile(char *file, Course *arr);
+
 
 #endif // projekti.h

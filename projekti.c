@@ -3,6 +3,8 @@
 #include <string.h>
 #include "projekti.h"
 
+
+
  void addStudent(char *studentId, char *name, Course *arr)
  {
     int size = arr -> numStudents;
@@ -19,11 +21,18 @@
         arr -> numStudents = size+1;
 
 
-
  }
 
  void updatePoints(char *studentId, int round, int points, Course *arr)
  {
+     if(round < 0){
+        printf("There are no negative valued exercise rounds\n");
+        return;
+        }
+    if(points < 0){
+        printf("Exercise points for a round can't be negative\n");
+        return;
+        }
 
     int size = arr -> numStudents;
     int i = 0;  //index of the student with the correct id
@@ -65,9 +74,13 @@
 
   void printStudents(Course *arr)
  {
+     int size = arr->numStudents;
+     if(size < 1){
+        printf("There are no students in this course\n");
+        return;
+     }
     //sort array by total points
     qsort(arr, arr->numStudents, sizeof(Student), compareNum);
-    int size = arr->numStudents;
     int i = 0;
     while(i < size){
         printf("| %s | %s | ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
@@ -81,35 +94,129 @@
 
  }
 
-  void writeToFile(char *file, Course *arr)
-  {
 
-    FILE *f = fopen(file,"w");
-    if (!f) { //did the file opening succeed?
+
+void writeToFile(char *filename,Course *arr)
+{
+    FILE *f;
+        f = fopen(filename,"wb+");
+        if(!f){
+            fprintf(stderr, "Opening file failed\n");
+            return;
+        }
+        char space = ' ';
+        //char line[] = "\n";
+        int i = 0;
+        while(i<arr->numStudents){
+            fwrite(arr->students[i].studentId,sizeof(char)*7,1,f); //id
+            fwrite(&space,sizeof(char),1, f);
+            fwrite(arr->students[i].studentName,sizeof(char)*21,1,f); //name
+            fwrite(&space,sizeof(char),1, f);
+
+            for(int j = 0;j<6;j++){
+                fwrite(&(arr->students[i].points[j]),sizeof(int),1,f);
+                fwrite(&space,sizeof(char),1, f); //points with space between them for easier reading later
+            }
+            fwrite(&(arr->students[i].totalPoints),sizeof(int),1,f); //total points
+
+            i++;
+        }
+
+    fclose(f);
+}
+
+void readFromFile(char *filename, Course *arr)
+{
+
+    FILE *f;
+    f = fopen(filename, "rb");
+
+    if(!f){
         fprintf(stderr, "Opening file failed\n");
+        return;
     }
+    free(arr -> students);  //delete old data
+    free(arr);
+
+    arr = malloc(sizeof(Course));
+    arr->students = malloc(sizeof(Student));  //restart coursearray
+    arr->numStudents = 0;
+    char *space = malloc(2*sizeof(char));
+    int i = 0;
+    char buffer[7];
+
+    while (fread(buffer,sizeof(char)*7,1,f) == 1) {
+        arr->students = realloc(arr->students,sizeof(Student)*(i+1));
+        strcpy(arr->students[i].studentId,buffer);
+        fread(space,sizeof(char),1,f);
+        fread(arr->students[i].studentName,sizeof(char)*21,1,f);
+        fread(space,sizeof(char),1,f);
 
 
-    qsort(arr, arr->numStudents, sizeof(Student), compareNum);
+        for(int j = 0;j<6;j++){
+                fread(&(arr->students[i].points[j]),sizeof(int),1,f);
+                fread(&space,sizeof(char),1, f);//points with space between them for easier reading later
+            }
 
-    fwrite(arr,sizeof(Student),arr->numStudents,f);
+        fwrite(&(arr->students[i].totalPoints),sizeof(int),1,f);
+        i++;
+    }
+    i--;
+    arr->numStudents = i;
+    fclose(f);
+
+
+}
+
+
+
+//  void writeToFile(char *file, Course *arr)
+//  {
+//    char *name = strcat(file,".txt");  //force outputfile to be txt
+//
+//    FILE *f = fopen(name,"w");
+//    if (!f) { //did the file opening succeed?
+//        fprintf(stderr, "Opening file failed\n");
+//        return;
+//    }
+//
+//    qsort(arr, arr->numStudents, sizeof(Student), compareNum);
+//
 //    int size = arr->numStudents;
 //    int i = 0;
 //    while(i < size){
-//        fputs((const char) arr -> students[i].studentId, f);
+//        fputs(arr -> students[i].studentId, f);
 //        fputs(" ",f);
-//        fputs((const char) arr -> students[i].studentName, f);
+//        fputs(arr -> students[i].studentName, f);
 //        fputs(" ",f);
 //
 //        for(int j = 0;j<6;j++){
-//            fwrite(arr -> students[i].points[j], sizeof(int), 1, f);
+//            fprintf(f,"%d",arr -> students[i].points[j]);
 //             fputs(" ",f);
 //        }
 //
-//
-//        printf(" Total points: %d |\n",arr -> students[i].totalPoints);
+//        fputs(" Total points: ", f);
+//        fprintf(f,"%d",arr -> students[i].totalPoints);
+//        fputc('\n',f);
 //        i++;
 //    }
+//
+//    fclose(f);
+//
+//  }
 
-  }
+
+// void readFromFile(char *file)
+// {
+//    int lines = line_count(name);
+//
+//
+//
+//
+//
+//
+// }
+
+
+
 
