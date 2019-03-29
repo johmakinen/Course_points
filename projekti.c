@@ -34,17 +34,13 @@
             found = 1;
             arr->students[i].points[round-1] = points;//add the round points for the student
             int j, sum = 0;
-                for (j=0; j<6; j++){ //calculate new total points:
-                    sum = sum + arr->students[i].points[j];
-                }
-                printf("total: %d \n",sum);
+            for (j=0; j<6; j++){ //calculate new total points:
+                sum = sum + arr->students[i].points[j];
+            }
             arr -> students[i].totalPoints = sum;
         }
         i++;
     }
-
-
-
 
     if(!found){
         printf("Student with ID: %s not found\n",studentId);
@@ -83,8 +79,37 @@
         i++;
     }
 
-
-
-
  }
+
+  void writeToFile(char *file, Course *arr)
+  {
+
+    FILE *f = fopen(file,"w");
+    if (!f) { //did the file opening succeed?
+        fprintf(stderr, "Opening file failed\n");
+    }
+
+
+    qsort(arr, arr->numStudents, sizeof(Student), compareNum);
+
+    fwrite(arr,sizeof(Student),arr->numStudents,f);
+//    int size = arr->numStudents;
+//    int i = 0;
+//    while(i < size){
+//        fputs((const char) arr -> students[i].studentId, f);
+//        fputs(" ",f);
+//        fputs((const char) arr -> students[i].studentName, f);
+//        fputs(" ",f);
+//
+//        for(int j = 0;j<6;j++){
+//            fwrite(arr -> students[i].points[j], sizeof(int), 1, f);
+//             fputs(" ",f);
+//        }
+//
+//
+//        printf(" Total points: %d |\n",arr -> students[i].totalPoints);
+//        i++;
+//    }
+
+  }
 

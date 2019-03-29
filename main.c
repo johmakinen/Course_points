@@ -23,6 +23,7 @@ int main()
         buffer[31] = '\n';
         char id[7];
         char name[21];
+        char fileName[20];
         int round,points;
         switch(token){
         case 'A':
@@ -40,11 +41,18 @@ int main()
 
             id[6] = '\0';
             updatePoints(id,round,points,arr);
+
             break;
         case 'L':
 
             printStudents(arr);
+
             break;
+        case 'W':
+
+            sscanf(buffer+2,"%s",fileName);
+            fileName[19] = '\0';
+            writeToFile(fileName,arr);
 
         case 'Q':
 
