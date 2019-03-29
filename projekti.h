@@ -19,8 +19,8 @@ typedef struct course_st{
     int numStudents;
 }Course;
 
-void addStudent(const char *studentId, const char *name, Course *arr);
-void updatePoints(const char *studentId, int round, int points, Course *arr);
+void addStudent(char *studentId,char *name, Course *arr);
+void updatePoints(char *studentId, int round, int points, Course *arr);
 void printStudents(Course *arr);
 int compareNum(const void* a, const void* b);
 void printStudents(Course *arr);
