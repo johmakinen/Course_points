@@ -1,20 +1,23 @@
 #ifndef PROJEKTI_H
 #define PROJEKTI_H
 
-typedef struct {
 
-    char *students; //array, where x amount of students
+struct student_st;
+struct course_st;
+typedef struct  student_st{
 
-}Course;
-
-typedef struct {
-
-    char[21] name; //"Mallikas Mikko"'\0' name formatted as "lastName firstName"
-    char[7] studentId;  // "123456"'\0' "studentId"
-    int points[7]; // 1,4,2,7,3,6,'\0' points in every exercise round
+    char studentName[21]; //"Mallikas Mikko"'\0' name formatted as "lastName firstName"
+    char studentId[7];  // "123456"'\0' "studentId"
+    int points[6]; // 1,4,2,7,3,6 points in every exercise round
 
 
 }Student;
+
+typedef struct course_st{
+
+    Student *students; //array, where x amount of students
+    int numStudents;
+}Course;
 
 
 #endif // projekti.h
