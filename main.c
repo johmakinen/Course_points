@@ -13,26 +13,31 @@ int main()
     while(!done){
         char buffer[32];
         fgets(buffer,32,stdin);
-        char token = buffer[0];  //command char
+        char token = buffer[0];
         char id[7];
+        char name[21];
+        int round,points;
         switch(token){
         case 'A':
-            strncpy(id, buffer + 2, 6); //get id
+
+            sscanf(buffer+2,"%s %[^\n]s",id,name);
+            //printf("id: %s, name: %s ok",id,name);
             id[6] = '\0';
-            char name[21];
-            strncpy(name,buffer+9,20); //get full name
-            name[20] = '\0';
+            name[strlen(name)] = '\0';
+            //printf("id: %s, name: %s ok",id,name);
             addStudent(id,name,arr);
 
             break;
 
         case 'U':
-            strncpy(id, buffer + 2, 6); //get id
-            id[6] = '\0';
-            int round = buffer[9];
-            int points = buffer[11];
 
-            addPoints(id,round,points,arr);
+            sscanf(buffer+2,"%s %d %d",id,&round,&points);  //U 234567 1 7
+
+            updatePoints(id,round,points,arr);
+            break;
+        case 'L':
+            printStudents(arr);
+            break;
 
         case 'Q':
 
@@ -42,5 +47,5 @@ int main()
         }
     }
 
-
+    return 0;
 }
