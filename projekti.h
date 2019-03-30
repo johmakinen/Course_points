@@ -15,7 +15,7 @@ typedef struct  student_st{
 
 typedef struct course_st{
 
-    Student *students; //array, where x amount of students
+    Student *students; //array, where numStudents amount of students
     int numStudents;
 }Course;
 

@@ -9,7 +9,7 @@
  {
     int size = arr -> numStudents;
     int curr = 0;
-    while(curr < size){
+    while(curr < size){  //check if trying to add a student with ID that is already in the course
         int equal = strcmp(arr->students[curr].studentId,studentId);
         if(!equal){
             printf("Sorry, can't add a student with an already existing studentID\n");
@@ -75,6 +75,7 @@
 
  int compareNum(const void* a, const void* b)
 {
+    //compare function for qsort when printing the students. Sort by points, if equal points, sort by studentId
      const Student *aa = a;
      const Student *bb = b;
     if(aa->totalPoints == bb->totalPoints){
@@ -98,7 +99,7 @@
         printf("There are no students in this course\n");
         return;
      }
-    //sort array by total points
+    //sort array by total points or id
     qsort(arr->students, size, sizeof(Student), compareNum);
     int i = 0;
     while(i<size){
@@ -155,22 +156,20 @@ void readFromFile(char *filename, Course *arr)
     }
 
 
-    Student *students = malloc(sizeof(Student));
+    Student *students = malloc(sizeof(Student));  //initialise temporary array for students
     int i = 0;
-    while(fread(&students[i],sizeof(Student),1,f)){
+    while(fread(&students[i],sizeof(Student),1,f)){  // read students from the file to the temporary array
 
             students = realloc(students,(i+2)*sizeof(Student));
             i++;
         }
-     //one more for the last null
 
-    arr ->students = realloc(arr->students,sizeof(Student)*i);
+    arr ->students = realloc(arr->students,sizeof(Student)*i);  //alloc more (or less) space to the current array
     int k = 0;
     while(k<i){
-        memcpy(&(arr->students[k]),&students[k],sizeof(Student));
+        memcpy(&(arr->students[k]),&students[k],sizeof(Student));  //copy the temporary student array into the current array
         k++;
     }
-
     arr ->numStudents = i;
     free(students);
     fclose(f);
