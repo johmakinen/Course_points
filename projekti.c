@@ -18,7 +18,7 @@
         curr++;
     }
 
-    arr ->students = realloc(arr->students,sizeof(Student)*(size+1)); // add one more place to the array
+    arr ->students = realloc(arr->students,sizeof(Student)*(size+2)); // add one more place to the array
 
     for(int i = 0; i<6;i++){ //add 0 points to the student as starting condition
         arr -> students[size].points[i] = 0;
@@ -28,6 +28,7 @@
 
         strcpy(arr -> students[size].studentName,name);
         strcpy(arr -> students[size].studentId,studentId);
+        arr->students[size+1].studentName[0] = '\0'; //last student recognised by this
         arr -> numStudents = size+1;
 
         printf("Added student successfully!\n");
@@ -97,7 +98,7 @@
     //sort array by total points
     qsort(arr, arr->numStudents, sizeof(Student), compareNum);
     int i = 0;
-    while(i < size){
+    while(arr -> students[i].studentName[0] != '\0'){
         printf("| %s | %s | ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
         printf("Exercise points by round: |");
         for(int j = 0;j<6;j++){
@@ -106,6 +107,7 @@
         printf(" Total points: %d |\n",arr -> students[i].totalPoints);
         i++;
     }
+    printf("Number of students in the list: %d\n",arr->numStudents);
 
  }
 
@@ -121,7 +123,8 @@ void writeToFile(char *filename,Course *arr)
         }
         int i = 0;
         int t;
-        while(i<arr->numStudents){
+        qsort(arr, arr->numStudents, sizeof(Student), compareNum);
+        while(arr->students[i].studentName[0] != '\0'){
             t = fwrite(&(arr->students[i]),sizeof(Student),1,f);
             if(t == 0){
                 printf("Error writing the file");
@@ -149,45 +152,29 @@ void readFromFile(char *filename, Course *arr)
         return;
     }
 
-    int count = 0; //how many students in the file
 
-    Student *buffer = malloc(sizeof(Student));
-    while(fread(&buffer[0],sizeof(Student),1,f)==1){
-        count++;
-
-    }
-    printf("count: %d",count);
-
-    if(count < 1){
-        printf("Empty file\n");
-        return;
-    }
-    rewind(f);
-
-
-    Student *students = malloc(sizeof(Student)*count);
+    Student *students = malloc(sizeof(Student));
     int i = 0;
-    while(i < count){
-        int t = fread(&students[i],sizeof(Student),1,f);
-        if(t == 0){
-            printf("An error occurred");
-            return;
-        }
-        i++;
-        }
+    while(fread(&students[i],sizeof(Student),1,f)){
 
-    free(buffer);
-    arr ->students = realloc(arr->students,sizeof(Student)*count);
+            students = realloc(students,(i+2)*sizeof(Student));
+            i++;
+        }
+    int withnull = i+1; //one more for the last null
+
+    arr ->students = realloc(arr->students,sizeof(Student)*withnull);
     int k = 0;
-    while(k<count){
+    while(k<i){
         memcpy(&(arr->students[k]),&students[k],sizeof(Student));
         k++;
     }
-    arr ->numStudents = count;
+    arr->students[i].studentName[0] = '\0';
+    arr ->numStudents = i;
     free(students);
     fclose(f);
 
     printf("Opened file successfully!\n");
+
 
 }
 

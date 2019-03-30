@@ -8,6 +8,7 @@ int main()
 
     Course *arr = malloc(sizeof(Course));
     arr -> students = malloc(sizeof(Student));
+    arr->students[0].studentName[0] = '\0';
     arr -> numStudents = 0;
     int done = 0;
 
@@ -16,7 +17,7 @@ int main()
         char buffer[32];
 
         if(fgets(buffer, 32, stdin) == NULL){
-            printf("An error occurred");
+            fprintf(stderr, "Invalid input\n");
         }
 
         char token = buffer[0];
