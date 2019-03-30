@@ -77,7 +77,9 @@
 {
      const Student *aa = a;
      const Student *bb = b;
-
+    if(aa->totalPoints == bb->totalPoints){
+        return strcmp(aa->studentId,bb->studentId);
+    }
 
     if(aa->totalPoints > bb->totalPoints){
         return -1;
@@ -86,6 +88,7 @@
     }
 
     return 0;
+
 }
 
   void printStudents(Course *arr)
@@ -96,7 +99,7 @@
         return;
      }
     //sort array by total points
-    qsort(arr, arr->numStudents, sizeof(Student), compareNum);
+    qsort(arr->students, size, sizeof(Student), compareNum);
     int i = 0;
     while(i<size){
         printf("| %s | %s | ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
