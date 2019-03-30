@@ -30,6 +30,9 @@
         strcpy(arr -> students[size].studentId,studentId);
         arr -> numStudents = size+1;
 
+        printf("Added student successfully!\n");
+
+
 
  }
 
@@ -63,7 +66,9 @@
 
     if(!found){
         printf("Student with ID: %s not found\n",studentId);
+        return;
     }
+    printf("Updated points successfully!\n");
 
 
  }
@@ -115,9 +120,16 @@ void writeToFile(char *filename,Course *arr)
             return;
         }
         int i = 0;
+        int t;
         while(i<arr->numStudents){
-            fwrite(&(arr->students[i]),sizeof(Student),1,f);
+            t = fwrite(&(arr->students[i]),sizeof(Student),1,f);
+            if(t == 0){
+                printf("Error writing the file");
+                fclose(f);
+                return;
+            }
             i++;
+
         }
         fclose(f);
 
@@ -137,23 +149,42 @@ void readFromFile(char *filename, Course *arr)
         return;
     }
 
+    int count = 0; //how many students in the file
 
-    Course *temp = malloc(sizeof(Course));
-    temp -> students = malloc(sizeof(Student));
-    temp->numStudents = 0;
+    Student *buffer = malloc(sizeof(Student));
+    while(fread(&buffer[0],sizeof(Student),1,f)==1){
+        count++;
+
+    }
+    printf("count: %d",count);
+
+    if(count < 1){
+        printf("Empty file\n");
+        return;
+    }
+    rewind(f);
+
+
+    Student *students = malloc(sizeof(Student)*count);
     int i = 0;
-    while(i<arr->numStudents){
-        temp->students = realloc(temp->students,sizeof(Student)*(i+1));
-        fread(&(temp->students[i]),sizeof(Student),1,f);
+    while(i < count){
+        int t = fread(&students[i],sizeof(Student),1,f);
+        if(t == 0){
+            printf("An error occurred");
+            return;
+        }
         i++;
         }
 
-    arr ->students = realloc(arr->students,sizeof(Student)*i);
-    memcpy(arr->students,temp->students,i);
-    arr ->numStudents = i;
-    free(temp->students);
-    free(temp);
-
+    free(buffer);
+    arr ->students = realloc(arr->students,sizeof(Student)*count);
+    int k = 0;
+    while(k<count){
+        memcpy(&(arr->students[k]),&students[k],sizeof(Student));
+        k++;
+    }
+    arr ->numStudents = count;
+    free(students);
     fclose(f);
 
     printf("Opened file successfully!\n");
