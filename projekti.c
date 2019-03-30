@@ -18,7 +18,7 @@
         curr++;
     }
 
-    arr ->students = realloc(arr->students,sizeof(Student)*(size+2)); // add one more place to the array
+    arr ->students = realloc(arr->students,sizeof(Student)*(size+1)); // add one more place to the array
 
     for(int i = 0; i<6;i++){ //add 0 points to the student as starting condition
         arr -> students[size].points[i] = 0;
@@ -28,7 +28,6 @@
 
         strcpy(arr -> students[size].studentName,name);
         strcpy(arr -> students[size].studentId,studentId);
-        arr->students[size+1].studentName[0] = '\0'; //last student recognised by this
         arr -> numStudents = size+1;
 
         printf("Added student successfully!\n");
@@ -48,10 +47,10 @@
         return;
         }
 
-    int size = arr -> numStudents;
     int i = 0;  //index of the student with the correct id
     int found = 0;
-    while(!found && i < size){
+    int size = arr->numStudents;
+    while(!found && i<size){
         int equal = strcmp(arr->students[i].studentId,studentId);
         if(equal == 0){  //found the right student
             found = 1;
@@ -79,6 +78,7 @@
      const Student *aa = a;
      const Student *bb = b;
 
+
     if(aa->totalPoints > bb->totalPoints){
         return -1;
     }else{
@@ -98,7 +98,7 @@
     //sort array by total points
     qsort(arr, arr->numStudents, sizeof(Student), compareNum);
     int i = 0;
-    while(arr -> students[i].studentName[0] != '\0'){
+    while(i<size){
         printf("| %s | %s | ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
         printf("Exercise points by round: |");
         for(int j = 0;j<6;j++){
@@ -123,8 +123,7 @@ void writeToFile(char *filename,Course *arr)
         }
         int i = 0;
         int t;
-        qsort(arr, arr->numStudents, sizeof(Student), compareNum);
-        while(arr->students[i].studentName[0] != '\0'){
+        while(i<arr->numStudents){
             t = fwrite(&(arr->students[i]),sizeof(Student),1,f);
             if(t == 0){
                 printf("Error writing the file");
@@ -160,15 +159,15 @@ void readFromFile(char *filename, Course *arr)
             students = realloc(students,(i+2)*sizeof(Student));
             i++;
         }
-    int withnull = i+1; //one more for the last null
+     //one more for the last null
 
-    arr ->students = realloc(arr->students,sizeof(Student)*withnull);
+    arr ->students = realloc(arr->students,sizeof(Student)*i);
     int k = 0;
     while(k<i){
         memcpy(&(arr->students[k]),&students[k],sizeof(Student));
         k++;
     }
-    arr->students[i].studentName[0] = '\0';
+
     arr ->numStudents = i;
     free(students);
     fclose(f);

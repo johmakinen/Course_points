@@ -8,7 +8,6 @@ int main()
 
     Course *arr = malloc(sizeof(Course));
     arr -> students = malloc(sizeof(Student));
-    arr->students[0].studentName[0] = '\0';
     arr -> numStudents = 0;
     int done = 0;
 

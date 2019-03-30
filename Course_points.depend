@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1553943314 source:c:\users\johma\desktop\kouluhommii\c\course_points\main.c
+1553944914 source:c:\users\johma\desktop\kouluhommii\c\course_points\main.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -7,7 +7,7 @@
 
 1553943018 c:\users\johma\desktop\kouluhommii\c\course_points\projekti.h
 
-1553944007 source:c:\users\johma\desktop\kouluhommii\c\course_points\projekti.c
+1553945702 source:c:\users\johma\desktop\kouluhommii\c\course_points\projekti.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
