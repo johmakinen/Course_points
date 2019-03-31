@@ -102,13 +102,21 @@
     //sort array by total points or id
     qsort(arr->students, size, sizeof(Student), compareNum);
     int i = 0;
+    printf("| StudentID | Name of the student || Points by round || Total points |\n");
+    printf("------------------------------------------------------------------------\n");
     while(i<size){
-        printf("| %s | %s | ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
-        printf("Exercise points by round: |");
+        printf("| %s | %s ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
+
+        int c = 0;
+        while(c < 20-strlen(arr -> students[i].studentName)){
+                printf(" ");
+                c++;
+        }
+        printf("||");
         for(int j = 0;j<6;j++){
             printf(" %d |",arr -> students[i].points[j]); //print points for each round
         }
-        printf(" Total points: %d |\n",arr -> students[i].totalPoints);
+        printf("| %d |\n",arr -> students[i].totalPoints);
         i++;
     }
     printf("Number of students in the list: %d\n",arr->numStudents);

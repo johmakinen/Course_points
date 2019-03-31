@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
-1553947804 source:c:\users\johma\desktop\kouluhommii\c\course_points\main.c
+1553951404 source:c:\users\johma\desktop\kouluhommii\c\course_points\main.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 	"projekti.h"
 
-1553954098 c:\users\johma\desktop\kouluhommii\c\course_points\projekti.h
+1554053594 c:\users\johma\desktop\kouluhommii\c\course_points\projekti.h
 
-1553948050 source:c:\users\johma\desktop\kouluhommii\c\course_points\projekti.c
+1554054249 source:c:\users\johma\desktop\kouluhommii\c\course_points\projekti.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
