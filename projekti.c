@@ -47,10 +47,7 @@
         printf("There are only six exercise rounds\n");
         return;
     }
-//    if(points < 0){
-//        printf("Exercise points for a round can't be negative\n");
-//        return;
-//        }
+
 
     if(points > 32766){
         printf("Too large of a number, try something smaller\n");
