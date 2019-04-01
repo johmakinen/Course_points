@@ -18,7 +18,7 @@
         curr++;
     }
 
-    arr ->students = realloc(arr->students,sizeof(Student)*(size+1)); // add one more place to the array
+    arr ->students = realloc(arr->students,sizeof(Student)*(size+2)); // add one more place to the array
 
     for(int i = 0; i<6;i++){ //add 0 points to the student as starting condition
         arr -> students[size].points[i] = 0;
@@ -111,21 +111,17 @@
     int i = 0;
     printf("| StudentID | Name of the student || Points by round ||\n");
     printf("------------------------------------------------------------------------\n");
-    while(i<size){
-        printf("| %s | %s ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
 
-        int c = 0;
-        while(c < 20-strlen(arr -> students[i].studentName)){
-                printf(" ");
-                c++;
-        }
-        printf("||");
-        for(int j = 0;j<6;j++){
-            printf(" %d |",arr -> students[i].points[j]); //print points for each round
-        }
-        printf("| Total points: %d |\n",arr -> students[i].totalPoints);
+    while(i<size){
+
+        int *p = arr->students[i].points;
+
+        printf("| %-6s | %-20s || %d | %d | %d | %d | %d | %d || Total points: %d |\n",
+               arr->students[i].studentId,arr->students[i].studentName
+               ,p[0],p[1],p[2],p[3],p[4],p[5],arr->students[i].totalPoints);
         i++;
     }
+
     printf("Number of students in the list: %d\n",arr->numStudents);
 
  }
@@ -135,23 +131,24 @@
 void writeToFile(char *filename,Course *arr)
 {
     FILE *f;
-        f = fopen(filename,"wb");
+        f = fopen(filename,"w");
         if(!f){
             fprintf(stderr, "Opening file failed\n");
             return;
         }
         int i = 0;
-        int t;
         while(i<arr->numStudents){
-            t = fwrite(&(arr->students[i]),sizeof(Student),1,f);
-            if(t == 0){
-                printf("Error writing the file");
-                fclose(f);
-                return;
-            }
+
+             fprintf(f, "%-6s %-20s %d %d %d %d %d %d %d\n",arr->students[i].studentId,arr->students[i].studentName
+                     ,arr->students[i].points[0],arr->students[i].points[1]
+                     ,arr->students[i].points[2],arr->students[i].points[3]
+                     ,arr->students[i].points[4],arr->students[i].points[5]
+                     ,arr->students[i].totalPoints);
+
             i++;
 
         }
+
         fclose(f);
 
         printf("Wrote file successfully!\n");
@@ -163,7 +160,7 @@ void readFromFile(char *filename, Course *arr)
 {
 
     FILE *f;
-    f = fopen(filename, "rb");
+    f = fopen(filename, "r");
 
     if(!f){
         fprintf(stderr, "Opening file failed\n");
@@ -171,11 +168,20 @@ void readFromFile(char *filename, Course *arr)
     }
 
 
-    Student *students = malloc(sizeof(Student));  //initialise temporary array for students
+    Student *students = malloc(sizeof(Student));//initialise temporary array for students
+    char get[100];
     int i = 0;
-    while(fread(&students[i],sizeof(Student),1,f)){  // read students from the file to the temporary array
 
+    while(fgets(get, 100, f)){  // read students from the file to the temporary array
+            char first[21];
+            char last[21];
             students = realloc(students,(i+2)*sizeof(Student));
+            sscanf(get, "%s %s %s %d %d %d %d %d %d %d",students[i].studentId,last,first,&students[i].points[0]
+                     ,&students[i].points[1],&students[i].points[2],&students[i].points[3],&students[i].points[4]
+                     ,&students[i].points[5],&students[i].totalPoints);
+            strcat(last," ");
+            strncat(last,first,21);
+            strcpy(students[i].studentName,last);
             i++;
         }
 
@@ -196,6 +202,77 @@ void readFromFile(char *filename, Course *arr)
 
 
 
+int main()
+{
+
+    Course *arr = malloc(sizeof(Course));
+    Student *stud = malloc(sizeof(Student));
+    arr -> students = stud;   //initialise course with size of one student
+    arr -> numStudents = 0;
+    int done = 0;
+
+    while(!done){
+
+        char buffer[32];
+        char token;
+        if(fgets(buffer, 32, stdin) == NULL){  // get line from stdin, raise errors
+            fprintf(stderr, "End of file reached\n");
+            token = 'Q';
+        }else{
+            token = buffer[0];
+        }
+
+         //initialise places for id, name, filename, token, round and points
+        buffer[31] = '\n';
+        char id[7];
+        char name[21];
+        char fileName[21];
+        int round,points;
+        switch(token){ //add student to the course
+        case 'A':
+
+            sscanf(buffer+2,"%6s %20[^\n]s",id,name);
+            addStudent(id,name,arr);
+            break;
+
+        case 'U': //update student's points for a specific round
+
+            sscanf(buffer+2,"%s %d %d",id,&round,&points);
+            updatePoints(id,round,points,arr);
+            break;
+
+        case 'L': //print all the students in this course
+            printStudents(arr);
+            break;
+
+        case 'W':  //write the course points into a file
+
+            sscanf(buffer+2,"%20s",fileName);
+            writeToFile(fileName,arr);
+            break;
+
+        case 'O':  //open course points from a file
+
+            sscanf(buffer+2,"%20s",fileName);
+            readFromFile(fileName,arr);
+            break;
+
+        case 'Q':  //quit and free memory
+
+            done = 1;
+            free(arr -> students);
+            free(arr);
+            break;
+
+        default:
+            printf("Invalid input\n");
+            break;
+
+        }
+    }
+
+    return 0;
+}
 
 
 
