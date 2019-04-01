@@ -7,7 +7,7 @@ int main()
 {
 
     Course *arr = malloc(sizeof(Course));       //initialise course
-    arr -> students = malloc(sizeof(Student));
+    arr -> students = malloc(sizeof(Student));   //initialise course with size of one student
     arr -> numStudents = 0;
     int done = 0;
 

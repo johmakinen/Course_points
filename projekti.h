@@ -21,9 +21,9 @@ typedef struct course_st{
 
 void addStudent(char *studentId,char *name, Course *arr);
 void updatePoints(char *studentId, int round, int points, Course *arr);
-void printStudents(Course *arr);
-int compareNum(const void* a, const void* b);
 //void printStudents(Course *arr);
+int compareNum(const void* a, const void* b);
+void printStudents(Course *arr);
 void writeToFile(char *file, Course *arr);
 void readFromFile(char *file, Course *arr);
 
