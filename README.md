@@ -5,7 +5,7 @@ The following commands are used in the course register:
 
 A 123456 firstname lastname : add student with id 123456 and name into the course register  
 
-U 123456 1 5                : update points to 5 in round 1 for the student with id 123456  
+U 123456 1 5  +                 : update points to 5 in round 1 for the student with id 123456  
 
 L                           : print out the current register  
 
