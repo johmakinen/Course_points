@@ -17,11 +17,12 @@ typedef struct course_st{
 
     Student *students; //array, where numStudents amount of students
     int numStudents;
+
 }Course;
 
 void addStudent(char *studentId,char *name, Course *arr);
 void updatePoints(char *studentId, int round, int points, Course *arr);
-//void printStudents(Course *arr);
+void printStudents(Course *arr);
 int compareNum(const void* a, const void* b);
 void printStudents(Course *arr);
 void writeToFile(char *file, Course *arr);

@@ -38,14 +38,24 @@
 
  void updatePoints(char *studentId, int round, int points, Course *arr)
  {
-     if(round < 0){
-        printf("There are no negative valued exercise rounds\n");
+     if(round < 1){
+        printf("There are no non-positive valued exercise rounds\n");
         return;
         }
-    if(points < 0){
-        printf("Exercise points for a round can't be negative\n");
+
+    if(round > 6){
+        printf("There are only six exercise rounds\n");
         return;
-        }
+    }
+//    if(points < 0){
+//        printf("Exercise points for a round can't be negative\n");
+//        return;
+//        }
+
+    if(points > 32766){
+        printf("Too large of a number, try something smaller\n");
+        return;
+    }
 
     int i = 0;  //index of the student with the correct id
     int found = 0;
@@ -102,7 +112,7 @@
     //sort array by total points or id
     qsort(arr->students, size, sizeof(Student), compareNum);
     int i = 0;
-    printf("| StudentID | Name of the student || Points by round || Total points |\n");
+    printf("| StudentID | Name of the student || Points by round ||\n");
     printf("------------------------------------------------------------------------\n");
     while(i<size){
         printf("| %s | %s ",arr -> students[i].studentId,arr -> students[i].studentName);//id and name
@@ -116,7 +126,7 @@
         for(int j = 0;j<6;j++){
             printf(" %d |",arr -> students[i].points[j]); //print points for each round
         }
-        printf("| %d |\n",arr -> students[i].totalPoints);
+        printf("| Total points: %d |\n",arr -> students[i].totalPoints);
         i++;
     }
     printf("Number of students in the list: %d\n",arr->numStudents);
