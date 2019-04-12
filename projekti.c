@@ -61,6 +61,7 @@
         int equal = strcmp(arr->students[i].studentId,studentId);
         if(equal == 0){  //found the right student
             found = 1;
+
             arr->students[i].points[round-1] = points;//add the round points for the student
             int j, sum = 0;
             for (j=0; j<6; j++){ //calculate new total points:
@@ -231,14 +232,20 @@ int main()
         switch(token){ //add student to the course
         case 'A':
 
-            sscanf(buffer+2,"%6s %20[^\n]s",id,name);
-            addStudent(id,name,arr);
+            if(sscanf(buffer+2,"%6s %20[^\n]s",id,name)==2){
+                addStudent(id,name,arr);
+            }else{
+                printf("Invalid input\n");
+            }
             break;
 
         case 'U': //update student's points for a specific round
 
-            sscanf(buffer+2,"%s %d %d",id,&round,&points);
-            updatePoints(id,round,points,arr);
+            if(sscanf(buffer+2,"%s %d %d",id,&round,&points)==3){
+                updatePoints(id,round,points,arr);
+            }else{
+                printf("Invalid input\n");
+            }
             break;
 
         case 'L': //print all the students in this course
@@ -247,14 +254,20 @@ int main()
 
         case 'W':  //write the course points into a file
 
-            sscanf(buffer+2,"%20s",fileName);
-            writeToFile(fileName,arr);
+            if(sscanf(buffer+2,"%20s",fileName)==1){
+                writeToFile(fileName,arr);
+            }else{
+                printf("Please give the name of the file\n");
+            }
             break;
 
         case 'O':  //open course points from a file
 
-            sscanf(buffer+2,"%20s",fileName);
-            readFromFile(fileName,arr);
+            if(sscanf(buffer+2,"%20s",fileName)==1){
+                readFromFile(fileName,arr);
+            }else{
+                printf("Please give the name of the file\n");
+            }
             break;
 
         case 'Q':  //quit and free memory
