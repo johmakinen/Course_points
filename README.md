@@ -1,5 +1,5 @@
 # Course_points
-An implementation of a course register in C  
+An implementation of a course register in C. The main program and all the functionalities are in projekti.c file  
 
 The following commands are used in the course register:  
 ___
